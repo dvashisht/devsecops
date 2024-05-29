@@ -35,10 +35,10 @@ pipeline {
     stage('K8S Deployment - DEV') {
       steps {
         withKubeConfig([credentialsId: 'kubeconfig']) {
-        sh "sed -i 's#replace#vashishtd/docker-images:${$GIT_COMMIT}#g' k8s_deployment_service.yaml"
+        sh "sed -i 's#replace#vashishtd/docker-images:${GIT_COMMIT}#g' k8s_deployment_service.yaml"
         sh "kubectl apply -f k8s_deployment_service.yaml"
-          }
-        }      
-      }
+        }
+      }      
     }
   }
+}
