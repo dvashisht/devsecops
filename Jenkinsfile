@@ -53,11 +53,11 @@ pipeline {
       steps {      
         		sh "mvn dependency-check:check"
 			}
-      post {
-        always {
-          dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
-        }
-      }   	
+      // post {
+      //   always {
+      //     dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
+      //   }
+      // }   	
     }
 
     stage('Docker Build and Push') {
@@ -83,6 +83,7 @@ pipeline {
         always { 
             junit 'target/surefire-reports/*.xml'
             jacoco execPattern: 'target/jacoco.exec'
+            dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
         }
   }
 }
