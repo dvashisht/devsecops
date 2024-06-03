@@ -58,17 +58,6 @@ pipeline {
       }
     }
 
-    // stage('Vulnerability Scan - Docker') {
-    //   steps {      
-    //     		sh "mvn dependency-check:check"
-		// 	}
-    //   // post {
-    //   //   always {
-    //   //     dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
-    //   //   }
-    //   // }   	
-    // }
-
     stage('Vulnerability Scan - Docker') {
       steps {
         parallel(
@@ -103,22 +92,13 @@ pipeline {
           },
           "Kubesec Scan": {
             sh "bash kubesec-scan.sh"
-          }//,
-          // "Trivy Scan": {
-          //   sh "bash trivy-k8s-scan.sh"
-          // }
+          },
+           "Trivy Scan": {
+            sh "bash trivy-k8s-scan.sh"
+          }
         )
       }
     }
-
-    // stage('K8S Deployment - DEV') {
-    //   steps {
-    //     withKubeConfig([credentialsId: 'kubeconfig']) {
-    //     sh "sed -i 's#replace#vashishtd/docker-images:${GIT_COMMIT}#g' k8s_deployment_service.yaml"
-    //     sh "kubectl apply -f k8s_deployment_service.yaml"
-    //     }
-    //   }      
-    // }
 
     stage('K8S Deployment - DEV') {
       steps {
@@ -139,6 +119,7 @@ pipeline {
 
 
   }
+  
   post { 
         always { 
             junit 'target/surefire-reports/*.xml'
