@@ -1,7 +1,8 @@
 #!/bin/bash
 #cis-kubelet.sh
 
-total_fail=$(kube-bench run --targets node  --version 1.15 --check 4.2.1,4.2.2 --json | jq .[].total_fail)
+# total_fail=$(kube-bench run --targets node  --version 1.15 --check 4.2.1,4.2.2 --json | jq .[].total_fail)
+total_fail=$(kube-bench --benchmark cis-1.6 --config-dir cfg --config cfg/config.yaml run --targets node --check 4.2.1,4.2.2 --json | jq .[].total_fail)
 
 if [[ "$total_fail" -ne 0 ]];
         then

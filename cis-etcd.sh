@@ -1,7 +1,8 @@
 #!/bin/bash
 #cis-etcd.sh
 
-total_fail=$(kube-bench run --targets etcd  --version 1.15 --check 2.2 --json | jq .[].total_fail)
+# total_fail=$(kube-bench run --targets etcd  --version 1.15 --check 2.2 --json | jq .[].total_fail)
+total_fail=$(kube-bench --benchmark cis-1.6 --config-dir cfg --config cfg/config.yaml run --targets etcd --check 2.2 --json | jq .[].total_fail)
 
 if [[ "$total_fail" -ne 0 ]];
         then
