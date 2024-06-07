@@ -136,6 +136,7 @@ pipeline {
       }
     }
 
+    // **** This Stage is disabled since could not find Docker Image 
     // stage('OWASP ZAP - DAST') {
     //   steps {
     //     withKubeConfig([credentialsId: 'kubeconfig']) {
@@ -157,6 +158,25 @@ pipeline {
     //       sh 'exit 1'
     //   }
     // }
+
+    stage('K8S CIS Benchmark') {
+      steps {
+        script {
+          parallel(
+            "Master": {
+              sh "bash cis-master.sh"
+            },
+            "Etcd": {
+              sh "bash cis-etcd.sh"
+            },
+            "Kubelet": {
+              sh "bash cis-kubelet.sh"
+            }
+          )
+        }
+      }
+    }
+
   }
 
   post { 
